@@ -21,7 +21,6 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         logger: 'file',
         synchronize: true
       };
-    console.log(options)
     return {
       type: 'postgres',
       host: this.config.get<string>('DB_HOST'),
