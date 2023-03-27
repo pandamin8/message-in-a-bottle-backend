@@ -15,14 +15,12 @@ export class AuthController {
     @Post('signup')
     async createUser(@Body() body: CreateUserDto) {
         const result = await this.authService.register(body)
-        console.log(result)
         return result
     }
 
     @Post('login')
     async loginUser(@Body() body: CreateUserDto) {
         const result = await this.authService.login(body)
-        console.log(result)
         return result
     }
 }

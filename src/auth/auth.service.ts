@@ -14,11 +14,11 @@ export class AuthService {
     public async register(body: CreateUserDto) {
         const { email, password }: CreateUserDto = body
 
-        const user = new User()
+        let user = new User()
         user.email = email
         user.password = this.helper.encodePassword(password)
 
-        await this.usersService.create(user)
+        user = await this.usersService.create(user)
         const token = this.helper.generateToken(user)
 
         return { user, token }
