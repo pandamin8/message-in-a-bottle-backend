@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm'
+import { Message } from '../messages/message.entity'
+import { MessageRecipient } from '../messages/message-recipient.entity'
 
 @Entity()
 export class User {
@@ -13,4 +15,13 @@ export class User {
 
     @Column({ type: 'timestamp', nullable: true, default: new Date() })
     lastLoginAt: Date | null
+
+    @CreateDateColumn()
+    created_at: Date
+
+    @OneToMany(() => Message, (message) => message.author)
+    messages: Message[]
+
+    @OneToMany(() => MessageRecipient, (messageRecipient) => messageRecipient.recipient)
+    inbox: MessageRecipient[]
 }

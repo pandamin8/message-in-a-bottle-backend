@@ -8,9 +8,6 @@ import { User } from '../users/user.entity'
 export class AuthService {
     constructor (private usersService: UsersService, private helper: AuthHelper) {}
 
-    // @Inject(AuthHelper)
-    // private readonly helper: AuthHelper
-
     public async register(body: CreateUserDto) {
         const { email, password }: CreateUserDto = body
 
@@ -38,21 +35,8 @@ export class AuthService {
 
         const token = this.helper.generateToken(user)
 
-        this.usersService.update(user.id, { lastLoginAt: new Date() })
+        this.usersService.updateLastLogin(user.id)
 
         return { user, token }
     }
-
-    // async signup(email: string, password: string) {
-    //     const salt = randomBytes(8).toString('hex')
-    //     const hash = (await scrypt(password, salt, 32)) as Buffer
-    //     const result = salt + '.' + hash.toString('hex')
-
-    //     const user = await this.usersService.create(email, result)
-
-    //     const payload = { email: user.email, sub: user.id }
-    //     const token = this.jwtTokenService.sign(payload)
-    //     console.log(token)
-    //     return { user, access_token: token }
-    // }
 }

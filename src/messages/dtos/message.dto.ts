@@ -1,14 +1,15 @@
 import { Expose } from 'class-transformer'
 
-export class UserDto {
+export class MessageDto {
+
     @Expose()
     id: number
 
     @Expose()
-    email: string
+    subject: string
 
     @Expose()
-    lastLoginAt: Date
+    body: string
 
     @Expose()
     created_at: Date
