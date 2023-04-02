@@ -25,4 +25,16 @@ export class MessagesRecipientsService {
 
         return this.repo.save(messageRecipient)
     }
+
+    async listInbox (user: User) {
+
+        const query = this.repo.createQueryBuilder('mr')
+            .innerJoin('mr.message', 'message')          
+            .select(['mr.id', 'mr.is_read', 'message.id', 'message.subject'])
+            .where('mr.recipient = :id', { id: user.id })
+
+        const inbox = await query.getMany()
+
+        return inbox
+    }
 }
