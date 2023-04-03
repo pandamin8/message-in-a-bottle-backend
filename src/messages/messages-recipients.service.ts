@@ -53,11 +53,9 @@ export class MessagesRecipientsService {
 
         const inbox = await query.getMany()
         const itemCount = await query.getCount()
-    
-        const { entities } = await query.getRawAndEntities()
 
         const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto })
 
-        return new PageDto(entities, pageMetaDto)
+        return new PageDto(inbox, pageMetaDto)
     }
 }
