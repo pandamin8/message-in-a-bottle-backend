@@ -4,7 +4,13 @@ import { Repository } from 'typeorm'
 import { MessageRecipient } from './message-recipient.entity'
 import { User } from '../users/user.entity'
 import { Message } from './message.entity'
-import { UsersService } from 'src/users/users.service'
+import { UsersService } from '../users/users.service'
+import { MessageIsReadInbox } from '../common/types/MessageIsReadInbox'
+
+// Modules for pagination
+import { PageDto } from '../common/dtos/page.dto'
+import { PageMetaDto } from '../common/dtos/page-meta.dto'
+import { PageOptionsDto } from '../common/dtos/page-options.dto'
 
 @Injectable()
 export class MessagesRecipientsService {
@@ -26,15 +32,32 @@ export class MessagesRecipientsService {
         return this.repo.save(messageRecipient)
     }
 
-    async listInbox (user: User) {
+    async listInbox (user: User, status: MessageIsReadInbox, pageOptionsDto: PageOptionsDto) {
 
-        const query = this.repo.createQueryBuilder('mr')
+        const isReadStatus = status ? status : 'all'
+
+        let query = this.repo.createQueryBuilder('mr')
             .innerJoin('mr.message', 'message')          
             .select(['mr.id', 'mr.is_read', 'message.id', 'message.subject'])
-            .where('mr.recipient = :id', { id: user.id })
+            .where('mr.recipient = :id', { id: user.id })                   
+
+        switch (isReadStatus) {
+            case 'read':
+                query = query.andWhere('mr.is_read = true')
+                break
+            case 'not_read':
+                query = query.andWhere('mr.is_read = false')
+        }
+
+        query.skip(pageOptionsDto.skip).take(pageOptionsDto.take)
 
         const inbox = await query.getMany()
+        const itemCount = await query.getCount()
+    
+        const { entities } = await query.getRawAndEntities()
 
-        return inbox
+        const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto })
+
+        return new PageDto(entities, pageMetaDto)
     }
 }
