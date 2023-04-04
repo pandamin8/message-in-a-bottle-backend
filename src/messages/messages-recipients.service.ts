@@ -40,15 +40,15 @@ export class MessagesRecipientsService {
 
         let query = this.repo.createQueryBuilder('mr')
             .innerJoin('mr.message', 'message')          
-            .select(['mr.id', 'mr.is_read', 'message.id', 'message.subject'])
+            .select(['mr.id', 'mr.isRead', 'message.id', 'message.subject'])
             .where('mr.recipient = :id', { id: user.id })                   
 
         switch (isReadStatus) {
             case 'read':
-                query = query.andWhere('mr.is_read = true')
+                query = query.andWhere('mr.isRead = true')
                 break
             case 'not_read':
-                query = query.andWhere('mr.is_read = false')
+                query = query.andWhere('mr.isRead = false')
         }
 
         return await paginate(query, pageOptionsDto)

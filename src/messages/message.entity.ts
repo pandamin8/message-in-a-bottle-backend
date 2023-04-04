@@ -1,20 +1,15 @@
-import { Entity, Column, CreateDateColumn, PrimaryGeneratedColumn, ManyToOne, OneToOne } from 'typeorm'
+import { AbstractEntity } from 'src/common/entities/abstract.entity'
+import { Entity, Column, ManyToOne } from 'typeorm'
 import { User } from '../users/user.entity'
 
 @Entity()
-export class Message {
-
-    @PrimaryGeneratedColumn()
-    id: number
+export class Message extends AbstractEntity {
 
     @Column()
     subject: string
 
     @Column()
     body: string
-
-    @CreateDateColumn()
-    created_at: Date
 
     @ManyToOne(() => User, (user) => user.messages)
     author: User

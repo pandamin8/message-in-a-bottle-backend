@@ -1,11 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm'
+import { AbstractEntity } from 'src/common/entities/abstract.entity'
+import { Entity, Column, OneToMany } from 'typeorm'
 import { Message } from '../messages/message.entity'
 import { MessageRecipient } from '../messages/message-recipient.entity'
 
 @Entity()
-export class User {
-    @PrimaryGeneratedColumn()
-    id: number
+export class User extends AbstractEntity {
 
     @Column({ unique: true, type: 'varchar' })
     email: string
@@ -15,9 +14,6 @@ export class User {
 
     @Column({ type: 'timestamp', nullable: true, default: () => 'CURRENT_TIMESTAMP' })
     lastLoginAt: Date | null
-
-    @CreateDateColumn()
-    created_at: Date
 
     @OneToMany(() => Message, (message) => message.author)
     messages: Message[]

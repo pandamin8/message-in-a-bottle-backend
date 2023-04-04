@@ -60,7 +60,7 @@ export class UsersService {
         return this.repo
         .createQueryBuilder('user')
         .select()
-        .orderBy('RANDOM()')
+        .orderBy('RAND()')
         .where('user.id != :id', { id })
         .getOne()
     }
