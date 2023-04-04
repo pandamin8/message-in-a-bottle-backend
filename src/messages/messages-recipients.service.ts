@@ -12,6 +12,8 @@ import { PageDto } from '../common/dtos/page.dto'
 import { PageMetaDto } from '../common/dtos/page-meta.dto'
 import { PageOptionsDto } from '../common/dtos/page-options.dto'
 
+import { paginate } from '../common/helper/pagination.helper'
+
 @Injectable()
 export class MessagesRecipientsService {
 
@@ -49,13 +51,6 @@ export class MessagesRecipientsService {
                 query = query.andWhere('mr.is_read = false')
         }
 
-        query.skip(pageOptionsDto.skip).take(pageOptionsDto.take)
-
-        const inbox = await query.getMany()
-        const itemCount = await query.getCount()
-
-        const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto })
-
-        return new PageDto(inbox, pageMetaDto)
+        return await paginate(query, pageOptionsDto)
     }
 }
