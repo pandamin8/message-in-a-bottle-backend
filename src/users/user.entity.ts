@@ -13,7 +13,7 @@ export class User {
     @Column({ type: 'varchar' })
     password: string
 
-    @Column({ type: 'timestamp', nullable: true, default: new Date() })
+    @Column({ type: 'timestamp', nullable: true, default: () => 'CURRENT_TIMESTAMP' })
     lastLoginAt: Date | null
 
     @CreateDateColumn()
