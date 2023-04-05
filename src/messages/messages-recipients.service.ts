@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common'
+import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { MessageRecipient } from './message-recipient.entity'
@@ -17,8 +17,10 @@ import { paginate } from '../common/helper/pagination.helper'
 @Injectable()
 export class MessagesRecipientsService {
 
-    constructor (@InjectRepository(MessageRecipient) private repo: Repository<MessageRecipient>
-    , private userService: UsersService) {}
+    constructor (
+    @InjectRepository(MessageRecipient) private repo: Repository<MessageRecipient>
+    , private userService: UsersService
+    ) {}
 
     async create (message: Message) {
         const messageRecipient = this.repo.create()
@@ -32,6 +34,17 @@ export class MessagesRecipientsService {
         messageRecipient.message = message
 
         return this.repo.save(messageRecipient)
+    }
+
+    async findOne (id: number, recipient: User) {
+        if (!id) return null
+
+        return this.repo.findOne({
+            where: { id, recipient: { id: recipient.id } },
+            join: { alias: 'mr', innerJoinAndSelect: {
+                message: 'mr.message'
+            } } 
+        })
     }
 
     async listInbox (user: User, status: MessageIsReadInbox, pageOptionsDto: PageOptionsDto) {
@@ -52,5 +65,18 @@ export class MessagesRecipientsService {
         }
 
         return await paginate(query, pageOptionsDto)
+    }
+
+    async readMessage (user: User, id: number) {
+
+        const messageRecipient = await this.findOne(id, user)
+
+        if (!messageRecipient)
+            throw new NotFoundException('Message not found')
+
+        messageRecipient.isRead = true
+        await this.repo.save(messageRecipient)
+
+        return messageRecipient
     }
 }

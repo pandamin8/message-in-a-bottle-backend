@@ -1,4 +1,4 @@
-import { Controller, Post, Get, UseGuards, Request, Body, Query } from '@nestjs/common'
+import { Controller, Post, Get, UseGuards, Request, Body, Query, Param } from '@nestjs/common'
 import { CreateMessageDto } from './dtos/create-message.dto'
 import { MessagesService } from './messages.service'
 import { MessagesRecipientsService } from './messages-recipients.service'
@@ -34,9 +34,15 @@ export class MessagesController {
     @Query('status') status: MessageIsReadInbox,
     @Query() pageOptionsDto: PageOptionsDto
     ) {        
-        const message = await this.messagesRecipientsService
+        const messages = await this.messagesRecipientsService
             .listInbox(req.user, status, pageOptionsDto)
             
-        return message
+        return messages
+    }
+
+    @Post('read/:id')
+    @UseGuards(JwtAuthGuard)
+    readMessage (@Request() req, @Param('id') id: number) {
+        return this.messagesRecipientsService.readMessage(req.user, id)
     }
 }
