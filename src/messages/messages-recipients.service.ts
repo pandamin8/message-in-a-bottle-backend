@@ -74,6 +74,8 @@ export class MessagesRecipientsService {
         if (!messageRecipient)
             throw new NotFoundException('Message not found')
 
+        console.log(user)
+
         messageRecipient.isRead = true
         await this.repo.save(messageRecipient)
 

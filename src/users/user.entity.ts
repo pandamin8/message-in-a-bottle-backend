@@ -2,6 +2,7 @@ import { AbstractEntity } from 'src/common/entities/abstract.entity'
 import { Entity, Column, OneToMany } from 'typeorm'
 import { Message } from '../messages/message.entity'
 import { MessageRecipient } from '../messages/message-recipient.entity'
+import { Exclude } from 'class-transformer'
 
 @Entity()
 export class User extends AbstractEntity {
@@ -9,7 +10,8 @@ export class User extends AbstractEntity {
     @Column({ unique: true, type: 'varchar' })
     email: string
 
-    @Column({ type: 'varchar' })
+    @Exclude()
+    @Column({ type: 'varchar', select: false })
     password: string
 
     @Column({ type: 'timestamp', nullable: true, default: () => 'CURRENT_TIMESTAMP' })
