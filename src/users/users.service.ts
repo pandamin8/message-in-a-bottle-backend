@@ -19,8 +19,11 @@ export class UsersService {
         return user
     }
 
-    findByEmail(email: string) {
-        return this.repo.findOneBy({ email })
+    findByEmail(email: string, exclusive: boolean = true) {
+        if (exclusive)
+            return this.repo.findOneBy({ email })
+            
+        return this.repo.findOne({ select: this.getCols(), where: { email } })
     }
 
     findOne (id: number) {
@@ -63,6 +66,10 @@ export class UsersService {
         .orderBy('RAND()')
         .where('user.id != :id', { id })
         .getOne()
+    }
+
+    getCols<User>(): (keyof User)[] {
+        return (this.repo.metadata.columns.map(col => col.propertyName) as (keyof User)[])
     }
 }
 

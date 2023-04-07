@@ -23,7 +23,7 @@ export class AuthService {
 
     public async login(body: CreateUserDto) {
         const { email, password } = body
-        const user: User = await this.usersService.findByEmail(email)
+        const user: User = await this.usersService.findByEmail(email, false)
 
         if (!user)
             throw new HttpException('No user found', HttpStatus.NOT_FOUND)
