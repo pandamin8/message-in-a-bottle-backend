@@ -10,6 +10,6 @@ export async function paginate (query: SelectQueryBuilder<ObjectLiteral>, pageOp
     const data = await query.getMany()
     const itemCount = await query.getCount()
     
-    const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto })
-    return new PageDto(data, pageMetaDto)
+    const pageMeta = new PageMetaDto({ itemCount, pageOptionsDto })
+    return new PageDto(data, pageMeta)
 }

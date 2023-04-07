@@ -7,7 +7,6 @@ import { Serialize } from '../interceptors/serialize-interceptor'
 import { MessageDto } from './dtos/message.dto'
 import { MessageIsReadInbox } from '../common/types/MessageIsReadInbox'
 
-import { PageDto } from 'src/common/dtos/page.dto'
 import { PageOptionsDto } from 'src/common/dtos/page-options.dto'
 
 @Controller('messages')
@@ -32,10 +31,10 @@ export class MessagesController {
     async getInbox(
     @Request() req: any,
     @Query('status') status: MessageIsReadInbox,
-    @Query() pageOptionsDto: PageOptionsDto
+    @Query() pageOptions: PageOptionsDto
     ) {        
         const messages = await this.messagesRecipientsService
-            .listInbox(req.user, status, pageOptionsDto)
+            .listInbox(req.user, status, pageOptions)
             
         return messages
     }
@@ -44,5 +43,15 @@ export class MessagesController {
     @UseGuards(JwtAuthGuard)
     readMessage (@Request() req, @Param('id') id: number) {
         return this.messagesRecipientsService.readMessage(req.user, id)
+    }
+
+    @Get('sent')
+    @UseGuards(JwtAuthGuard)
+    listSent (
+        @Request() req,
+        @Query('status') status: MessageIsReadInbox,
+        @Query() pageOptions: PageOptionsDto
+        ) {
+        return this.messagesRecipientsService.listSent(req.user, pageOptions, status)
     }
 }

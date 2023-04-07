@@ -7,11 +7,7 @@ import { Message } from './message.entity'
 import { UsersService } from '../users/users.service'
 import { MessageIsReadInbox } from '../common/types/MessageIsReadInbox'
 
-// Modules for pagination
-import { PageDto } from '../common/dtos/page.dto'
-import { PageMetaDto } from '../common/dtos/page-meta.dto'
 import { PageOptionsDto } from '../common/dtos/page-options.dto'
-
 import { paginate } from '../common/helper/pagination.helper'
 
 @Injectable()
@@ -47,7 +43,7 @@ export class MessagesRecipientsService {
         })
     }
 
-    async listInbox (user: User, status: MessageIsReadInbox, pageOptionsDto: PageOptionsDto) {
+    async listInbox (user: User, status: MessageIsReadInbox, pageOptions: PageOptionsDto) {
 
         const isReadStatus = status ? status : 'all'
 
@@ -64,7 +60,7 @@ export class MessagesRecipientsService {
                 query = query.andWhere('mr.isRead = false')
         }
 
-        return await paginate(query, pageOptionsDto)
+        return await paginate(query, pageOptions)
     }
 
     async readMessage (user: User, id: number) {
@@ -80,5 +76,25 @@ export class MessagesRecipientsService {
         await this.repo.save(messageRecipient)
 
         return messageRecipient
+    }
+
+    listSent (user: User, pageOptions: PageOptionsDto, status: MessageIsReadInbox) {
+
+        const isReadStatus = status ? status : 'all'
+
+        let query = this.repo.createQueryBuilder('mr')
+            .innerJoin('mr.message', 'message')
+            .select(['mr.id', 'mr.isRead', 'message'])
+            .where('message.author = :id', { id: user.id })
+
+            switch (isReadStatus) {
+                case 'read':
+                    query = query.andWhere('mr.isRead = true')
+                    break
+                case 'not_read':
+                    query = query.andWhere('mr.isRead = false')
+            }
+
+        return paginate(query, pageOptions)
     }
 }
