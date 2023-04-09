@@ -1,7 +1,7 @@
 import { AbstractEntity } from 'src/common/entities/abstract.entity'
 import { Entity, Column, OneToMany } from 'typeorm'
-import { Message } from '../messages/message.entity'
-import { MessageRecipient } from '../messages/message-recipient.entity'
+import { Message } from 'src/messages/entities/message.entity'
+import { MessageRecipient } from 'src/messages/entities/message-recipient.entity'
 import { Exclude } from 'class-transformer'
 
 @Entity()

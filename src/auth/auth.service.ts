@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, Inject, HttpException, HttpStatus } fr
 import { UsersService } from '../users/users.service';
 import { AuthHelper } from './auth.helper';
 import { CreateUserDto } from '../users/dtos/create-user.dto';
-import { User } from '../users/user.entity'
+import { User } from '../users/entities/user.entity'
 
 @Injectable()
 export class AuthService {

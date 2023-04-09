@@ -1,6 +1,6 @@
 import { AbstractEntity } from 'src/common/entities/abstract.entity'
 import { Entity, Column, ManyToOne, OneToOne, JoinColumn } from 'typeorm'
-import { User } from '../users/user.entity'
+import { User } from 'src/users/entities/user.entity'
 import { Message } from './message.entity'
 
 @Entity()

@@ -1,6 +1,6 @@
 import { AbstractEntity } from 'src/common/entities/abstract.entity'
 import { Entity, Column, ManyToOne } from 'typeorm'
-import { User } from '../users/user.entity'
+import { User } from '../../users/entities/user.entity'
 
 @Entity()
 export class Message extends AbstractEntity {

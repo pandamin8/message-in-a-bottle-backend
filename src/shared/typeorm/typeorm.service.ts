@@ -2,11 +2,6 @@ import { Injectable, Inject } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from '@nestjs/typeorm'
 
-import { Message } from '../../messages/message.entity'
-import { MessageRecipient } from '../../messages/message-recipient.entity'
-import { User } from '../../users/user.entity'
-
-
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
   @Inject(ConfigService)
@@ -20,7 +15,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       database: this.config.get<string>('DB_NAME'),
       username: this.config.get<string>('DB_USERNAME'),
       password: this.config.get<string>('DB_PASSWORD'),
-      entities: [User, Message, MessageRecipient],
+      entities: ['dist/**/*.entity.{ts,js}'],
       migrations: ['dist/migrations/*.{ts,js}'],
       migrationsTableName: 'typeorm_migrations',
       logger: 'file',

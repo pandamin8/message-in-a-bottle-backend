@@ -1,9 +1,9 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { MessageRecipient } from './message-recipient.entity'
-import { User } from '../users/user.entity'
-import { Message } from './message.entity'
+import { MessageRecipient } from './entities/message-recipient.entity'
+import { User } from '../users/entities/user.entity'
+import { Message } from './entities/message.entity'
 import { UsersService } from '../users/users.service'
 import { MessageIsReadInbox } from '../common/types/MessageIsReadInbox'
 

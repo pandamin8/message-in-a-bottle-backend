@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm'
-import { User } from './user.entity'
+import { User } from './entities/user.entity'
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from './dtos/create-user.dto';
 
@@ -22,7 +22,7 @@ export class UsersService {
     findByEmail(email: string, exclusive: boolean = true) {
         if (exclusive)
             return this.repo.findOneBy({ email })
-            
+
         return this.repo.findOne({ select: this.getCols(), where: { email } })
     }
 

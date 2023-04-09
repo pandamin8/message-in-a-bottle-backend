@@ -5,7 +5,7 @@ import { UsersModule } from './users/users.module';
 import { MessagesModule } from './messages/messages.module';
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { User } from './users/user.entity'
+import { User } from './users/entities/user.entity'
 import { AuthModule } from './auth/auth.module';
 import { getEnvPath } from './common/helper/env.helper'
 import { TypeOrmConfigService } from './shared/typeorm/typeorm.service'
