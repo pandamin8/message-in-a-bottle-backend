@@ -1,7 +1,9 @@
 import { AbstractEntity } from 'src/common/entities/abstract.entity'
-import { Entity, Column, ManyToOne, OneToOne, JoinColumn } from 'typeorm'
+import { Entity, Column, ManyToOne, OneToOne, JoinColumn, OneToMany } from 'typeorm'
+
 import { User } from 'src/users/entities/user.entity'
 import { Message } from './message.entity'
+import { Report } from './report.entity'
 
 @Entity()
 export class MessageRecipient extends AbstractEntity {

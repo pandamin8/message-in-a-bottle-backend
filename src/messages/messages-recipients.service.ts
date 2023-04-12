@@ -1,11 +1,13 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
+import { UsersService } from '../users/users.service'
+import { MessageIsReadInbox } from '../common/types/MessageIsReadInbox'
+
 import { MessageRecipient } from './entities/message-recipient.entity'
 import { User } from '../users/entities/user.entity'
 import { Message } from './entities/message.entity'
-import { UsersService } from '../users/users.service'
-import { MessageIsReadInbox } from '../common/types/MessageIsReadInbox'
+import { Report } from './entities/report.entity'
 
 import { PageOptionsDto } from '../common/dtos/page-options.dto'
 import { paginate } from '../common/helper/pagination.helper'
@@ -96,5 +98,10 @@ export class MessagesRecipientsService {
             }
 
         return paginate(query, pageOptions)
+    }
+
+    async report (user: User, id: number) {
+        const messageRecipient = await this.findOne(id, user)
+        
     }
 }

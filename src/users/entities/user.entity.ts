@@ -1,8 +1,10 @@
 import { AbstractEntity } from 'src/common/entities/abstract.entity'
 import { Entity, Column, OneToMany } from 'typeorm'
+import { Exclude } from 'class-transformer'
+
 import { Message } from 'src/messages/entities/message.entity'
 import { MessageRecipient } from 'src/messages/entities/message-recipient.entity'
-import { Exclude } from 'class-transformer'
+import { Report } from 'src/messages/entities/report.entity'
 
 @Entity()
 export class User extends AbstractEntity {
@@ -22,4 +24,7 @@ export class User extends AbstractEntity {
 
     @OneToMany(() => MessageRecipient, (messageRecipient) => messageRecipient.recipient)
     inbox: MessageRecipient[]
+
+    @OneToMany(() => Report, (messageRecipientReport) => messageRecipientReport.reporter)
+    reported: Report[]
 }

@@ -2,10 +2,12 @@ import { Controller, Post, Get, UseGuards, Request, Body, Query, Param } from '@
 import { CreateMessageDto } from './dtos/create-message.dto'
 import { MessagesService } from './messages.service'
 import { MessagesRecipientsService } from './messages-recipients.service'
+import { ReportsService } from './reports.service'
 import { JwtAuthGuard } from '../auth/auth.guard'
 import { Serialize } from '../interceptors/serialize-interceptor'
 import { MessageDto } from './dtos/message.dto'
 import { MessageIsReadInbox } from '../common/types/MessageIsReadInbox'
+import { CreateReportDto } from './dtos/create-report.dto'
 
 import { PageOptionsDto } from 'src/common/dtos/page-options.dto'
 
@@ -14,7 +16,8 @@ export class MessagesController {
 
     constructor (
         private messagesService: MessagesService,
-        private messagesRecipientsService: MessagesRecipientsService
+        private messagesRecipientsService: MessagesRecipientsService,
+        private reportsService: ReportsService
         ) {}
 
     @Post('send')
@@ -53,5 +56,11 @@ export class MessagesController {
         @Query() pageOptions: PageOptionsDto
         ) {
         return this.messagesRecipientsService.listSent(req.user, pageOptions, status)
+    }
+
+    @Post('report/:id')
+    @UseGuards(JwtAuthGuard)
+    report (@Request() req, @Param('id') id: number, @Body() body: CreateReportDto) {
+        return this.reportsService.create(req.user, id, body)
     }
 }
