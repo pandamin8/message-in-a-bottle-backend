@@ -1,4 +1,4 @@
-import { Controller, Post, Get, UseGuards, Body, Query, Param, Patch } from '@nestjs/common'
+import { Controller, Post, Get, UseGuards, Body, Query, Param, Patch, Delete } from '@nestjs/common'
 import { CreateMessageDto } from './dtos/create-message.dto'
 import { MessagesService } from './services/messages.service'
 import { MessagesRecipientsService } from './services/messages-recipients.service'
@@ -48,14 +48,14 @@ export class MessagesController {
 
     @Patch('read/:id')
     @UseGuards(JwtAuthGuard)
-    readMessage (@CurrentUser() user, @Param('id') id: number) {
+    readMessage (@CurrentUser() user: User, @Param('id') id: number) {
         return this.messagesRecipientsService.readMessage(user, id)
     }
 
     @Get('sent')
     @UseGuards(JwtAuthGuard)
     listSent (
-        @CurrentUser() user,
+        @CurrentUser() user: User,
         @Query('status') status: MessageIsReadInbox,
         @Query() pageOptions: PageOptionsDto
         ) {
@@ -64,7 +64,13 @@ export class MessagesController {
 
     @Post('report/:id')
     @UseGuards(JwtAuthGuard)
-    report (@CurrentUser() user, @Param('id') id: number, @Body() body: CreateReportDto) {
+    reportMessage (@CurrentUser() user: User, @Param('id') id: number, @Body() body: CreateReportDto) {
         return this.reportsService.create(user, id, body)
+    }
+
+    @Delete('delete/:id')
+    @UseGuards(JwtAuthGuard)
+    deleteMessage (@CurrentUser() user: User, @Param('id') id: number) {
+        return this.messagesService.remove(user, id)
     }
 }

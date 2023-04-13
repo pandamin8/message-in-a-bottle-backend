@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Message } from '../entities/message.entity'
@@ -15,5 +15,19 @@ export class MessagesService {
         message.author = user
         
         return this.repo.save(message)
+    }
+
+    findOne (id: number, user: User) {
+        if (!id || !user) return null
+
+        return this.repo.findOne({ where: { id, author: { id: user.id } } })
+    }
+
+    async remove (user: User, id: number) {
+        const message = await this.findOne(id, user)
+
+        if (!message) throw new NotFoundException('Message not found')
+
+        return this.repo.remove(message)
     }
 }

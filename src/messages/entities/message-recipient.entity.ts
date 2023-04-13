@@ -14,7 +14,9 @@ export class MessageRecipient extends AbstractEntity {
     @ManyToOne(() => User, (user) => user.inbox)
     recipient: User
 
-    @OneToOne(() => Message)
+    @OneToOne(() => Message, {
+        onDelete: 'CASCADE'
+    })
     @JoinColumn()
     message: Message
 }
