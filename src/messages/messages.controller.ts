@@ -1,8 +1,8 @@
-import { Controller, Post, Get, UseGuards, Request, Body, Query, Param } from '@nestjs/common'
+import { Controller, Post, Get, UseGuards, Request, Body, Query, Param, Patch } from '@nestjs/common'
 import { CreateMessageDto } from './dtos/create-message.dto'
-import { MessagesService } from './messages.service'
-import { MessagesRecipientsService } from './messages-recipients.service'
-import { ReportsService } from './reports.service'
+import { MessagesService } from './services/messages.service'
+import { MessagesRecipientsService } from './services/messages-recipients.service'
+import { ReportsService } from './services/reports.service'
 import { JwtAuthGuard } from '../auth/auth.guard'
 import { Serialize } from '../interceptors/serialize-interceptor'
 import { MessageDto } from './dtos/message.dto'
@@ -42,7 +42,7 @@ export class MessagesController {
         return messages
     }
 
-    @Post('read/:id')
+    @Patch('read/:id')
     @UseGuards(JwtAuthGuard)
     readMessage (@Request() req, @Param('id') id: number) {
         return this.messagesRecipientsService.readMessage(req.user, id)

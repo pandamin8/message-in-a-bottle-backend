@@ -2,9 +2,9 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { MessagesRecipientsService } from './messages-recipients.service'
-import { CreateReportDto } from './dtos/create-report.dto'
+import { CreateReportDto } from '../dtos/create-report.dto'
 
-import { Report } from './entities/report.entity'
+import { Report } from '../entities/report.entity'
 import { User } from 'src/users/entities/user.entity'
 
 @Injectable()

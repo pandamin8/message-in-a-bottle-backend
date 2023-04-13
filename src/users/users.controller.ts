@@ -4,7 +4,7 @@ import { JwtAuthGuard } from 'src/auth/auth.guard'
 import { User } from './entities/user.entity'
 import { Serialize } from '../interceptors/serialize-interceptor'
 import { UserDto } from './dtos/user.dto'
-import { UsersService } from './users.service'
+import { UsersService } from './services/users.service'
 
 @Controller('users')
 @Serialize(UserDto)

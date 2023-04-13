@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
+import { UsersService } from '../users/services/users.service';
 import { AuthHelper } from './auth.helper';
 import { CreateUserDto } from '../users/dtos/create-user.dto';
 import { User } from '../users/entities/user.entity'

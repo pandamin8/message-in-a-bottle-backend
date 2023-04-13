@@ -1,16 +1,16 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { UsersService } from '../users/users.service'
-import { MessageIsReadInbox } from '../common/types/MessageIsReadInbox'
+import { UsersService } from '../../users/services/users.service'
+import { MessageIsReadInbox } from '../../common/types/MessageIsReadInbox'
 
-import { MessageRecipient } from './entities/message-recipient.entity'
-import { User } from '../users/entities/user.entity'
-import { Message } from './entities/message.entity'
-import { Report } from './entities/report.entity'
+import { MessageRecipient } from '../entities/message-recipient.entity'
+import { User } from '../../users/entities/user.entity'
+import { Message } from '../entities/message.entity'
+import { Report } from '../entities/report.entity'
 
-import { PageOptionsDto } from '../common/dtos/page-options.dto'
-import { paginate } from '../common/helper/pagination.helper'
+import { PageOptionsDto } from '../../common/dtos/page-options.dto'
+import { paginate } from '../../common/helper/pagination.helper'
 
 @Injectable()
 export class MessagesRecipientsService {
